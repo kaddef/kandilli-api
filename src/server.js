@@ -17,7 +17,12 @@ const extractData = (data) => {
     const longitude = parts[3];
     const depth = parts[4];
     const magnitude = parts[6];
-    const location = parts.slice(8, -1).join(' ');
+    let location;
+    if(parts[parts.length - 3].includes("REVIZE")) {
+        location = parts.slice(8, -3).join(' ');
+    } else {
+        location = parts.slice(8, -1).join(' ');
+    }
     return {
         date,
         time,
