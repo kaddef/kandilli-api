@@ -1,5 +1,5 @@
 import express from "express"
-import puppeteer from "puppeteer";
+import 'dotenv/config'
 import axios from 'axios';
 import { load } from 'cheerio'
 import { ToadScheduler, SimpleIntervalJob, Task } from "toad-scheduler"
@@ -7,7 +7,8 @@ import fs from "fs"
 import cors from 'cors'
 
 const app = express()
-const PORT = 3000
+const PORT = process.env.PORT || 3500
+console.log(process.env.NODE_ENV)
 
 const extractData = (data) => {
     const parts = data.trim().split(/\s+/);
@@ -73,10 +74,10 @@ const task = new Task('simple task', updateTodayFile)
 const job = new SimpleIntervalJob({ seconds: 60 * 10 }, task)
 scheduler.addSimpleIntervalJob(job)
 
-// app.use(cors({
-//     credentials: true,
-//     origin: ["http://localhost:5173","http://192.168.56.1:5173","http://192.168.1.52:5173"]
-// }))
+app.use(cors({
+    //credentials: true,
+    origin: ["http://localhost:5173","https://depremler-app.onrender.com/"]
+}))
 app.use(cors())
 
 app.get('/today', async (req, res) => {
